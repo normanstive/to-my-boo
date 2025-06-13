@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Love Letter in Envelope</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Georgia', serif;
+      background: linear-gradient(to bottom right, #ffe6e6, #ffe0f0, #fff0f5);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .hearts-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background-image: url('Limag/romantic.png');
+      background-size: cover;            /* Ensure the image covers the entire area */
+      background-position: center;       /* Center the image */
+      opacity: 0.5;
+    }
+
+    .envelope {
+      position: relative;
+      width: 300px;
+      height: 200px;
+      cursor: pointer;
+      transition: all 0.6s ease;
+    }
+
+    .envelope-body {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #fff0f5;
+      border-radius: 4px;
+      box-shadow: 0 4px 20px rgba(255, 105, 180, 0.2);
+      border: 1px solid #f8bbd0;
+    }
+
+    .envelope-shadow {
+      position: absolute;
+      bottom: -8px;
+      left: 4px;
+      right: 4px;
+      height: 8px;
+      background: rgba(255, 105, 180, 0.1);
+      border-radius: 50%;
+      filter: blur(4px);
+      z-index: -1;
+    }
+
+    
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+
+.diagonal-text {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -80%) rotate(-25deg);
+  font-size: 20px;
+  font-family: 'Dancing Script', cursive;
+  color: #c2185b;
+  pointer-events: none;
+  z-index: 80;
+  white-space: nowrap;
+}
+
+.diagonal-text span {
+  opacity: 0;
+  display: inline-block;
+  animation: appear 0.6s forwards;
+}
+
+.diagonal-text span:nth-child(1)  { animation-delay: 0s; }
+.diagonal-text span:nth-child(2)  { animation-delay: 0.05s; }
+.diagonal-text span:nth-child(3)  { animation-delay: 0.10s; }
+.diagonal-text span:nth-child(4)  { animation-delay: 0.15s; }
+.diagonal-text span:nth-child(5)  { animation-delay: 0.20s; }
+.diagonal-text span:nth-child(6)  { animation-delay: 0.25s; }
+.diagonal-text span:nth-child(7)  { animation-delay: 0.30s; }
+.diagonal-text span:nth-child(8)  { animation-delay: 0.35s; }
+.diagonal-text span:nth-child(9)  { animation-delay: 0.40s; }
+.diagonal-text span:nth-child(10) { animation-delay: 0.45s; }
+.diagonal-text span:nth-child(11) { animation-delay: 0.50s; }
+.diagonal-text span:nth-child(12) { animation-delay: 0.55s; }
+.diagonal-text span:nth-child(13) { animation-delay: 0.60s; }
+.diagonal-text span:nth-child(14) { animation-delay: 0.65s; }
+.diagonal-text span:nth-child(15) { animation-delay: 0.70s; }
+.diagonal-text span:nth-child(16) { animation-delay: 0.75s; }
+.diagonal-text span:nth-child(17) { animation-delay: 0.80s; }
+.diagonal-text span:nth-child(18) { animation-delay: 0.85s; }
+.diagonal-text span:nth-child(19) { animation-delay: 0.90s; }
+.diagonal-text span:nth-child(20) { animation-delay: 0.95s; }
+.diagonal-text span:nth-child(21) { animation-delay: 1.00s; }
+.diagonal-text span:nth-child(22) { animation-delay: 1.05s; }
+.diagonal-text span:nth-child(23) { animation-delay: 1.10s; }
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.envelope.opened .diagonal-text {
+  opacity: 0;
+}
+
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: #fff0f5;
+      transform-origin: top center;
+      transition: transform 0.6s ease;
+      z-index: 10;
+      border: 1px solid #f8bbd0;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .flap-triangle {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 150px solid transparent;
+      border-right: 150px solid transparent;
+      border-top: 80px solid #fff0f5;
+      filter: drop-shadow(0 2px 4px rgba(255, 105, 180, 0.1));
+    }
+
+    .envelope.opened .envelope-flap {
+      transform: rotateX(-120deg);
+    }
+
+    .letter-peek {
+      position: absolute;
+      top: 40px;
+      left: 50px;
+      width: 200px;
+      height: 140px;
+      background: #fffafc;
+      border: 1px solid #f8bbd0;
+      border-radius: 2px;
+      transform: rotate(-8deg) translateY(20px);
+      transition: all 0.6s ease;
+      opacity: 0;
+      box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);
+      cursor: pointer;
+      z-index: 5;
+    }
+
+    .letter-peek.visible {
+      opacity: 1;
+      transform: rotate(-8deg) translateY(-10px);
+    }
+
+    .letter-content {
+      padding: 20px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .letter-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #d6336c;
+    }
+
+    .letter-subtitle {
+      font-size: 14px;
+      font-style: italic;
+      color: #b95f89;
+    }
+
+    .letter-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+.letter-full {
+  max-width: 500px;
+  max-height: 90vh; /* Add height limit */
+  overflow-y: auto; /* Enable vertical scroll if needed */
+  background: #efc2d1;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
+  text-align: center;
+  position: relative;
+}
+
+
+    .letter-full h2 {
+      color: #d6336c;
+      margin-bottom: 20px;
+      font-size: 26px;
+    }
+
+    .letter-full p {
+      font-size: 17px;
+      color: #6b2737;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .signature {
+      font-weight: bold;
+      color: #ad3535;
+    }
+
+    .closing {
+      font-style: italic;
+      font-size: 10px;
+      color: #bc6dd6;
+    }
+
+    .close-letter {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #888;
+    }
+
+
+@media (max-width: 480px) {
+  .letter-full {
+    padding: 25px;
+    max-width: 90vw;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .letter-full h2 {
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+
+  .letter-full p {
+    font-size: 13.5px;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+
+  .signature {
+    font-size: 13.5px;
+  }
+
+  .closing {
+    font-size: 12px;
+  }
+
+  .letter-content .letter-title {
+    font-size: 16px;
+  }
+
+  .letter-content .letter-subtitle {
+    font-size: 13px;
+  }
+}
+
+
+.mobile-close-btn {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .mobile-close-btn {
+    display: block;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff85a2;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 1100;
+    cursor: pointer;
+  }
+
+  .mobile-close-btn:hover {
+    background: #e66888;
+  }
+}
+
+
+
+
+
+  </style>
+</head>
+<body>
+
+
+
+
+<!-- 🔊 Volume Slider -->
+<div id="volume-control" style="position: fixed; top: 5px; right: 60px; z-index: 2000; background: rgba(255, 253, 155, 0.85); padding: 10px 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(20, 17, 17, 0.1);">
+  <label for="volumeSlider" style="font-size: 14px; font-weight: bold; color: #463ee3;">🎵 Vol.</label>
+  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.2" style="width: 100px; vertical-align: middle;">
+</div>
+
+<div class="hearts-bg"></div>
+
+<div class="envelope" onclick="toggleEnvelope()">
+  <div class="envelope-body">
+    <div class="envelope-shadow"></div>
+
+  </div>
+  
+  <div class="envelope-flap">
+    <div class="diagonal-text" id="diagonalText">
+      <span>T</span><span>o</span><span></span> </span><span>T</span><span>h</span><span>e</span><span> </span>
+      <span>L</span><span>o</span><span>v</span><span>e</span><span></span> </span><span>O</span><span>f</span><span> </span>
+      <span>M</span><span>y</span><span></span> </span><span>L</span><span>i</span><span>f</span><span>e</span><span> </span><span>💖&#128157;</span>
+    </div>
+    <div class="flap-triangle"></div>
+  </div>
+
+  <div class="letter-peek" onclick="showLetter(event)">
+    <div class="letter-content">
+      <span class="letter-title">To My Love</span>
+      <span class="letter-subtitle">Tap to read 💖</span>
+    </div>
+  </div>
+</div>
+
+<div class="letter-modal" id="letterModal" style="display: none" onclick="closeLetter()">
+  <div class="letter-full" onclick="event.stopPropagation()">
+    <button class="close-letter" onclick="closeLetter()">&times;</button>
+    <h2>&#128152;My Love ❤️</h2>
+
+    <p>I know sometimes your heart gets heavy with doubt, and trust doesn’t feel as easy as it once did — but I want you to hear this, not just with your ears, but with your soul:
+You are everything to me.&#128150;</p>
+<p>You’re not just part of my life — you are my life. Every beat of my heart whispers your name. Every dream I chase, I chase with you in mind. I don’t just love you — I choose you, every single day, no matter what life throws at us.&#128151;</p>
+<p>Even when trust feels like it’s slipping through your fingers, hold on to this truth: I’m not going anywhere. I’ll fight for us, for your peace, and for your heart — even when you're tired. Especially then.</p>
+<p>You’re my once-in-a-lifetime, and I’d rather go to war with the world than ever risk losing you.&#128175; Your needs, your happiness, your peace — they’ll always come first with me. Not because I have to, but because nothing feels more natural than loving you right.</p>
+<p>So please, keep trusting me — not because everything’s perfect, but because I’m here, and I’m real, and I’ll never stop proving it.&#128536;</p>
+    <p class="signature">Forever yours &#128139; AND you Forever Mine &#128141;</p>
+    <p class="closing">With all my love from NORMAN KIMANI &#128158;</p>
+  </div>
+  <button class="mobile-close-btn" onclick="closeLetter()">Close &#128059;</button>
+
+</div>
+
+
+<!-- 🎵 Audio Elements -->
+<audio id="loveAudio" src="song/yalevis.mp3" preload="auto"></audio>
+<audio id="bgAudio" src="song/closed.mp3" preload="auto" loop></audio>
+
+<!-- Optional Audio Controls (Visible for Debug) -->
+<!-- <audio controls src="song/yalevis.mp3" style="position: fixed; bottom: 20px; left: 20px; z-index: 3000;"></audio> -->
+
+<script>
+  const envelope = document.querySelector('.envelope');
+  const letter = document.querySelector('.letter-peek');
+  const modal = document.getElementById('letterModal');
+  const loveAudio = document.getElementById('loveAudio');
+  const bgAudio = document.getElementById('bgAudio');
+  const volumeSlider = document.getElementById('volumeSlider');
+
+  let isOpen = false;
+
+  function toggleEnvelope() {
+    isOpen = !isOpen;
+    envelope.classList.toggle('opened');
+    letter.classList.toggle('visible', isOpen);
+
+    if (isOpen) {
+      bgAudio.pause();
+      loveAudio.currentTime = 0;
+      loveAudio.play();
+    } else {
+      loveAudio.pause();
+      bgAudio.currentTime = 0;
+      bgAudio.play();
+    }
+  }
+
+  function showLetter(e) {
+    e.stopPropagation();
+    modal.style.display = 'flex';
+  }
+
+  function closeLetter() {
+    modal.style.display = 'none';
+  }
+
+  volumeSlider.addEventListener('input', () => {
+    const vol = parseFloat(volumeSlider.value);
+    loveAudio.volume = vol;
+    bgAudio.volume = vol;
+  });
+
+  window.addEventListener('load', () => {
+    bgAudio.volume = volumeSlider.value;
+    loveAudio.volume = volumeSlider.value;
+    bgAudio.play().catch(e => console.warn("Autoplay may be blocked."));
+  });
+</script>
+
+</body>
+</html>
+
