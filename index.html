@@ -358,7 +358,7 @@
   <div class="letter-peek" onclick="showLetter(event)">
     <div class="letter-content">
       <span class="letter-title">To My Love</span>
-      <span class="letter-subtitle">Tap to read 💖</span>
+      <span class="letter-subtitle">Tap to read💖&#129325;</span>
     </div>
   </div>
 </div>
@@ -384,7 +384,7 @@ You are everything to me.&#128150;</p>
 
 <!-- 🎵 Audio Elements -->
 <audio id="loveAudio" src="song/yalevis.mp3" preload="auto"></audio>
-<audio id="bgAudio" src="song/closed.mp3" preload="auto" loop></audio>
+<audio id="bgAudio" src="song/closed (mp3cut.net).mp3" preload="auto" loop></audio>
 
 <!-- Optional Audio Controls (Visible for Debug) -->
 <!-- <audio controls src="song/yalevis.mp3" style="position: fixed; bottom: 20px; left: 20px; z-index: 3000;"></audio> -->
@@ -430,11 +430,34 @@ You are everything to me.&#128150;</p>
     bgAudio.volume = vol;
   });
 
-  window.addEventListener('load', () => {
-    bgAudio.volume = volumeSlider.value;
-    loveAudio.volume = volumeSlider.value;
-    bgAudio.play().catch(e => console.warn("Autoplay may be blocked."));
-  });
+ window.addEventListener('load', () => {
+  bgAudio.volume = 0;
+
+  // Wait for any user interaction
+  const startAudioOnInteraction = () => {
+    bgAudio.play().then(() => {
+      let targetVolume = parseFloat(volumeSlider.value);
+      let step = 0.05;
+      let fadeIn = setInterval(() => {
+        if (bgAudio.volume + step < targetVolume) {
+          bgAudio.volume += step;
+        } else {
+          bgAudio.volume = targetVolume;
+          clearInterval(fadeIn);
+        }
+      }, 200);
+    }).catch((e) => {
+      console.warn("Play blocked even after interaction:", e);
+    });
+
+    // Remove the event listener after first interaction
+    document.removeEventListener('click', startAudioOnInteraction);
+  };
+
+  // Attach event listener for first user click
+  document.addEventListener('click', startAudioOnInteraction);
+});
+
 </script>
 
 </body>
